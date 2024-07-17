@@ -3,6 +3,8 @@ if [ -z "$1" ]; then
    echo "1 linux-amd64"
    echo "2 arm64-v8a"
    echo "3 armeabi-v7a"
+   echo "4 x86_64"
+   echo "5 x86"
    exit
 elif [ $1 -eq 1 ]; then
    target=linux-amd64
@@ -10,9 +12,13 @@ elif [ $1 -eq 2 ]; then
    target=arm64-v8a
 elif [ $1 -eq 3 ]; then
    target=armeabi-v7a
+elif [ $1 -eq 4 ]; then
+   target=x86_64
+elif [ $1 -eq 5 ]; then
+   target=x86
 else
-  echo "wrong target" 
-  exit
+   echo "wrong target"
+   exit
 fi
 
 rm -rf build/
