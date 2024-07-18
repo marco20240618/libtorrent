@@ -14,24 +14,44 @@ set(try_signal_src deps/try_signal/signal_error_code.cpp deps/try_signal/try_sig
 
 set(client_test_src examples/client_test.cpp examples/print.cpp examples/torrent_view.cpp examples/session_view.cpp)
 
+set(client_test_compile_options -pthread -std=c++14)
+
+set(client_test_link_options -static-libstdc++)
+
 if (linux-amd64)
    set(CMAKE_CXX_COMPILER /usr/bin/g++)
    set(target linux-amd64)
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
 elseif (arm64-v8a)
    set(CMAKE_CXX_COMPILER /usr/local/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++)
    set(target arm64-v8a)
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
 elseif (armeabi-v7a)
    set(CMAKE_CXX_COMPILER /usr/local/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi26-clang++)
    set(target armeabi-v7a)
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
 elseif (x86_64)
    set(CMAKE_CXX_COMPILER /usr/local/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android26-clang++)
    set(target x86_64)
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
 elseif (x86)
    set(CMAKE_CXX_COMPILER /usr/local/android-ndk-r26d/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android26-clang++)
    set(target x86)
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
 elseif (windows-amd64)
-   set(CMAKE_CXX_COMPILER /usr/bin/x86_64-w64-mingw32-g++)
    set(target windows-amd64)
+
+   set(torrent_compile_options /Zm800 -nologo -c -TP /wd4675 /EHs /std:c++14 /GR /Zc:throwingNew /O2 /Ob2 /W4 /MD /Zc:forScope /Zc:wchar_t /Zc:inline /Gw /favor:blend /Zc:__cplusplus /bigobj /permissive- /utf-8 /wd4251 /wd4268 /wd4275 /wd4373 /wd4503 -DBOOST_ALL_NO_LIB -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_ASIO_HAS_STD_CHRONO -DBOOST_ASIO_NO_DEPRECATED -DBOOST_COBALT_USE_STD_PMR=1 -DBOOST_MULTI_INDEX_DISABLE_SERIALIZATION -DBOOST_NO_DEPRECATED -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_SYSTEM_STATIC_LINK=1 -DNDEBUG -DOPENSSL_NO_SSL2 -DTORRENT_BUILDING_LIBRARY -DTORRENT_SSL_PEERS -DTORRENT_USE_I2P=1 -DTORRENT_USE_LIBCRYPTO -DTORRENT_USE_OPENSSL -DWIN32 -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_DEPRECATE -D_WIN32 -D_WIN32_WINNT=0x0A00 -D__USE_W32_SOCKETS)
+   
+   set(try_signal_compile_options /Zm800 -nologo -c -TP /wd4675 /EHs /std:c++14 /GR /Zc:throwingNew /O2 /Ob2 /W4 /MD /Zc:forScope /Zc:wchar_t /Zc:inline /Gw /favor:blend /Zc:__cplusplus -DBOOST_COBALT_USE_STD_PMR=1 -DNDEBUG -DOPENSSL_NO_SSL2 -DTORRENT_SSL_PEERS -DTORRENT_USE_I2P=1 -DTORRENT_USE_LIBCRYPTO -DTORRENT_USE_OPENSSL)
+
+   set(client_test_compile_options /Zm800 -nologo -TP /wd4675 /EHs /std:c++14 /GR /Zc:throwingNew /O2 /Ob2 /W4 /MD /Zc:forScope /Zc:wchar_t /Zc:inline /Gw /favor:blend /wd4251 /wd4268 /wd4275 /wd4373 /wd4503 -DBOOST_ALL_NO_LIB -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_ASIO_HAS_STD_CHRONO -DBOOST_ASIO_NO_DEPRECATED -DBOOST_COBALT_USE_STD_PMR=1 -DBOOST_MULTI_INDEX_DISABLE_SERIALIZATION -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_SYSTEM_STATIC_LINK=1 -DNDEBUG -DOPENSSL_NO_SSL2 -DTORRENT_SSL_PEERS -DTORRENT_USE_I2P=1 -DTORRENT_USE_LIBCRYPTO -DTORRENT_USE_OPENSSL -DWIN32 -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_DEPRECATE -D_SCL_SECURE_NO_DEPRECATE -D_WIN32 -D_WIN32_WINNT=0x0A00 -D__USE_W32_SOCKETS)
+
+   set(client_test_link_options /NOLOGO /INCREMENTAL:NO /OPT:ICF=5 /OPT:REF /MACHINE:X64 /subsystem:console)
+
+   unset(client_test_link_options)
+
+   set(client_test_link_libraries ${CMAKE_SOURCE_DIR}/boost/windows-amd64/libboost_system-vc143-mt-x64-1_85.lib ${CMAKE_SOURCE_DIR}/openssl/windows-amd64/libcrypto.lib ${CMAKE_SOURCE_DIR}/openssl/windows-amd64/libssl.lib advapi32.lib bcrypt.lib user32.lib shell32.lib gdi32.lib crypt32.lib iphlpapi.lib ws2_32.lib wsock32.lib)
 else()
 	message("no target os is specified")
 endif()
@@ -45,9 +65,9 @@ target_compile_options(try_signal-${target} PRIVATE ${try_signal_compile_options
 
 add_executable(client_test-${target} ${client_test_src})
 target_include_directories(client_test-${target} PRIVATE ${include_directories})
-target_link_libraries(client_test-${target} torrent-${target} try_signal-${target} ${CMAKE_SOURCE_DIR}/boost/${target}/libboost_system.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libssl.a ${CMAKE_SOURCE_DIR}/openssl/${target}/libcrypto.a)
-target_compile_options(client_test-${target} PRIVATE -pthread -std=c++14)
-target_link_options(client_test-${target} PRIVATE -static-libstdc++)
+target_link_libraries(client_test-${target} torrent-${target} try_signal-${target} ${client_test_link_libraries})
+target_compile_options(client_test-${target} PRIVATE ${client_test_compile_options})
+target_link_options(client_test-${target} PRIVATE ${client_test_link_options})
 
 ### target_compile_options do not link library
 
