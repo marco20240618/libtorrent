@@ -77,5 +77,5 @@ target_link_options(client_test-${target} PRIVATE ${client_test_link_options})
 ### cmake --build build -j $(nproc)
 
 ### windows, in powershell for vs 2022
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -B build -G Ninja -Dwindows-amd64=on
-cmake --build build
+### cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -B build -G Ninja -Dwindows-amd64=on
+### cmake --build build
