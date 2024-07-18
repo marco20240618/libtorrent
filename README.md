@@ -23,3 +23,22 @@ in Developer Command Prompt for VS 2022
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=14 -B build -G Ninja -Dwindows-amd64=on
 cmake --build build
 ```
+
+
+Prebuilt boost and openssl location
+
+Windows
+
+boost: https://sourceforge.net/projects/boost/files/boost-binaries
+
+openssl: https://www.firedaemon.com/get-openssl
+
+Android
+
+boost: https://github.com/moritz-wundke/Boost-for-Android.git
+
+openssl: https://github.com/217heidai/openssl_for_android.git
+
+Linux
+
+apt install libboost-tools-dev libboost-dev libboost-system-dev libssl-dev
