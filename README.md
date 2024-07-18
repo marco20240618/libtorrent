@@ -1,3 +1,5 @@
+Download android ndk to such as /usr/local/android-ndk-r26d
+
 1. build client_test for linux
 ```
 cmake -B build -Dlinux-amd64=on
