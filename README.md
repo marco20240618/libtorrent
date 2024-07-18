@@ -1,4 +1,8 @@
-Download android ndk to such as /usr/local/android-ndk-r26d
+Boost and openssl headers and libs are already included, you don't need to download them separately.
+
+If build for Linux and Windows, you don't need to download anything extra, except the build environment though.
+
+If build for Android, you only need to download android ndk to such as /usr/local/android-ndk-r26d
 
 1. build client_test for linux
 ```
